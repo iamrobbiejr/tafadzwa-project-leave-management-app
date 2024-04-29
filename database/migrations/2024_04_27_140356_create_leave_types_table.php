@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('leave_types', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('days_per_year')->nullable();
             $table->timestamps();
         });
     }

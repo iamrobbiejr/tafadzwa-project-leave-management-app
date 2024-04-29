@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('leave_balances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('employee_id');
+            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->unsignedBigInteger('leave_type_id');
+            $table->foreign('leave_type_id')->references('id')->on('leave_types');
+            $table->integer('remaining_days');
+            $table->integer('days_taken');
             $table->timestamps();
         });
     }

@@ -12,7 +12,8 @@ class LeaveBalanceController extends Controller
      */
     public function index()
     {
-        //
+        $leave_balances = LeaveBalance::paginate();
+        return view('leave_balance.index', compact('leave_balances'));
     }
 
     /**
@@ -20,7 +21,7 @@ class LeaveBalanceController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -28,7 +29,7 @@ class LeaveBalanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
