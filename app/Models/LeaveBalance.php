@@ -15,4 +15,9 @@ class LeaveBalance extends Model
     {
         return LeaveType::findOrFail($id);
     }
+
+    public function employee($id)
+    {
+        return Employee::findOrFail($id);
+    }
 }

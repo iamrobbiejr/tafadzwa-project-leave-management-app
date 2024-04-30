@@ -107,10 +107,11 @@ class EmployeeController extends Controller
     public function show(Employee $employee)
     {
 
-        $leaveRequests = LeaveRequest::where('status','pending')->where('employee_id', $employee->id)->get();
+        $pendingLeaveRequests = LeaveRequest::where('status','pending')->where('employee_id', $employee->id)->get();
+        $leaveRequests = LeaveRequest::where('status', '!=', 'pending')->where('employee_id', $employee->id)->paginate(10);
         $leaveBalances = LeaveBalance::where('employee_id',$employee->id)->get();
 
-        return view('employees.show', compact('employee', 'leaveBalances', 'leaveRequests'));
+        return view('employees.show', compact('employee', 'leaveBalances', 'leaveRequests', 'pendingLeaveRequests'));
     }
 
     /**

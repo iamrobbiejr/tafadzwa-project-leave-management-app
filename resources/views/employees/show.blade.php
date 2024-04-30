@@ -71,7 +71,7 @@
                                 <dt class="text-sm font-medium leading-6 text-gray-900">Pending Leave Requests</dt>
                                 <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
-                                        @forelse($leaveRequests as $leaveRequest)
+                                        @forelse($pendingLeaveRequests as $leaveRequest)
                                             <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                                                 <div class="flex w-0 flex-1 items-center">
 
@@ -107,6 +107,65 @@
 
 
                                     </ul>
+                                </dd>
+                            </div>
+
+                            <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Leave Requests History</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <table class="table-auto w-full">
+                                        <thead>
+                                        <tr class="bg-gray-100 text-gray-700 font-bold rounded-t-lg">
+                                            <th class="px-6 py-2 border border-gray-200">Leave Type</th>
+                                            <th class="px-6 py-2 border border-gray-200">Start Date</th>
+                                            <th class="px-6 py-2 border border-gray-200">End Date</th>
+                                            <th class="px-6 py-2 border border-gray-200">Number of Days</th>
+                                            <th class="px-6 py-2 border border-gray-200">Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @forelse ($leaveRequests as $leaveRequest)
+                                            <tr>
+                                                <td class="px-6 py-4 border border-gray-200">{{ $leaveRequest->leaveType($leaveRequest->leave_type_id)->name }}</td>
+                                                <td class="px-6 py-4 border border-gray-200">{{ Carbon\Carbon::parse($leaveRequest->start_date)->format('Y-m-d') }}</td>
+                                                <td class="px-6 py-4 border border-gray-200">{{ Carbon\Carbon::parse($leaveRequest->end_date)->format('Y-m-d') }}</td>
+                                                <td class="px-6 py-4 border border-gray-200">{{ $leaveRequest->no_of_days }}</td>
+                                                <td class="px-6 py-4 border border-gray-200">
+                                                    @if ($leaveRequest->status === 'pending')
+                                                        Pending
+                                                    @elseif ($leaveRequest->status === 'approved')
+                                                        Approved
+                                                    @else
+                                                        Rejected
+                                                    @endif
+                                                </td>
+                                                <td class="px-6 py-4 border border-gray-200">
+                                                    @if ($leaveRequest->status === 'pending')
+                                                        <a href="{{ route('update_leave', $leaveRequest) }}"
+                                                           class="text-blue-500 hover:underline">Edit Application</a>
+                                                        <form action="{{ route('leave-requests.destroy', $leaveRequest) }}" method="post">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="text-red-500 hover:underline">
+                                                                Cancel Application
+                                                            </button>
+                                                        </form>
+
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="px-6 py-4 text-center">No leave requests found.</td>
+                                            </tr>
+                                        @endforelse
+                                        </tbody>
+                                    </table>
+                                    @if ($leaveRequests->hasPages())
+                                        <div class="p-4">
+                                            {{ $leaveRequests->links() }}
+                                        </div>
+                                    @endif
                                 </dd>
                             </div>
                         </dl>
