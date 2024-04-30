@@ -139,20 +139,6 @@
                                                         Rejected
                                                     @endif
                                                 </td>
-                                                <td class="px-6 py-4 border border-gray-200">
-                                                    @if ($leaveRequest->status === 'pending')
-                                                        <a href="{{ route('update_leave', $leaveRequest) }}"
-                                                           class="text-blue-500 hover:underline">Edit Application</a>
-                                                        <form action="{{ route('leave-requests.destroy', $leaveRequest) }}" method="post">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="text-red-500 hover:underline">
-                                                                Cancel Application
-                                                            </button>
-                                                        </form>
-
-                                                    @endif
-                                                </td>
                                             </tr>
                                         @empty
                                             <tr>

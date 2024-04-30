@@ -71,6 +71,7 @@
                                 <th class="px-6 py-2 border border-gray-200">Leave Type</th>
                                 <th class="px-6 py-2 border border-gray-200">Start Date</th>
                                 <th class="px-6 py-2 border border-gray-200">End Date</th>
+                                <th class="px-6 py-2 border border-gray-200">Number of days</th>
                                 <th class="px-6 py-2 border border-gray-200">Status</th>
                                 <th class="px-6 py-2 border border-gray-200">Actions</th>
                             </tr>
