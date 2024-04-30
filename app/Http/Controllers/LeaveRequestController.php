@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\LeaveBalance;
 use App\Models\LeaveRequest;
+use App\Models\LeaveType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LeaveRequestController extends Controller
 {
@@ -15,7 +18,7 @@ class LeaveRequestController extends Controller
     public function index()
     {
 
-        $leaveRequests = LeaveRequest::paginate();
+        $leaveRequests = LeaveRequest::latest()->paginate(10);
         return view('leave_requests.index', compact('leaveRequests'));
     }
 
@@ -24,8 +27,10 @@ class LeaveRequestController extends Controller
      */
     public function create()
     {
+        $employees = Employee::all();
+        $leave_types = LeaveType::all();
 
-        return view('leave_requests.create');
+        return view('leave_requests.create')->with(['employees' => $employees, 'types' => $leave_types]);
     }
 
     /**
@@ -55,7 +60,12 @@ class LeaveRequestController extends Controller
 
         LeaveRequest::create($validatedData);
 
-        return redirect()->route('leave-requests.index')->with('success', 'Leave Request created successfully.');
+        if (Auth::user()->isAdmin())
+        {
+            return redirect()->route('leave-requests.index')->with('success', 'Leave Request created successfully.');
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Leave Request created successfully.');
     }
 
     /**
@@ -63,8 +73,9 @@ class LeaveRequestController extends Controller
      */
     public function show(LeaveRequest $leaveRequest)
     {
+        $leaveBalances = LeaveBalance::where('employee_id',$leaveRequest->employee_id)->get();
 
-        return view('leave_requests.show', compact('leaveRequest'));
+        return view('leave_requests.show', compact('leaveRequest', 'leaveBalances'));
     }
 
     /**
@@ -103,7 +114,13 @@ class LeaveRequestController extends Controller
 
         $leaveRequest->update($request->all());
 
-        return redirect()->route('leave-requests.index')->with('success', 'Leave Request updated successfully.');
+        if (Auth::user()->isAdmin())
+        {
+            return redirect()->route('leave-requests.index')->with('success', 'Leave Request updated successfully.');
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Leave Request updated successfully.');
+
     }
 
     public function approve(String $id): RedirectResponse
@@ -129,7 +146,7 @@ class LeaveRequestController extends Controller
             'status' => 'approved',
         ]);
 
-        return redirect()->route('leave-requests.index')->with('success', 'Leave Request approved successfully.');
+        return redirect()->back()->with('success', 'Leave Request approved successfully.');
     }
 
     public function reject(String $id): RedirectResponse
@@ -137,7 +154,7 @@ class LeaveRequestController extends Controller
         $leaveRequest = LeaveRequest::find($id);
         $leaveRequest->update(['status' => 'rejected']);
 
-        return redirect()->route('leave-requests.index')->with('success', 'Leave Request approved successfully.');
+        return redirect()->back()->with('success', 'Leave Request rejected successfully.');
     }
 
     /**
@@ -148,6 +165,11 @@ class LeaveRequestController extends Controller
 
         $leaveRequest->delete();
 
-        return redirect()->route('leave-requests.index')->with('success', 'Leave Request deleted successfully.');
+        if (Auth::user()->isAdmin())
+        {
+            return redirect()->route('leave-requests.index')->with('success', 'Leave Request cancelled successfully.');
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Leave Request cancelled successfully.');
     }
 }

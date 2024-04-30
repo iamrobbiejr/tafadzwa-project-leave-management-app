@@ -32,8 +32,8 @@ class DashController extends Controller
 
             // Replace with your actual dashboard view
             return view('dashboard')->with([
-                'employees' => $employeesCount,
-                'leaveRequestCount' => $leaveRequestsCount
+                'employeeCount' => $employeesCount,
+                'pendingLeaveCount' => $leaveRequestsCount
             ]);
 
         }

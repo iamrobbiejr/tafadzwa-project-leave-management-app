@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\LeaveBalance;
+use App\Models\LeaveRequest;
 use App\Models\LeaveType;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
@@ -17,7 +22,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::paginate(10);
+        $employees = Employee::latest()->paginate(10);
 
         return view('employees.index', compact('employees'));
     }
@@ -28,6 +33,27 @@ class EmployeeController extends Controller
     public function create()
     {
         return view('employees.create');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function apply()
+    {
+        $emp = Employee::where('user_id', Auth::user()->id)->firstOrFail();
+        $leaveBalances = LeaveBalance::where('employee_id',$emp->id)->get();
+
+        return view('employees.apply')->with(['employee' => $emp, 'balances' => $leaveBalances]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function update_leave($id): View|\Illuminate\Foundation\Application|Factory|Application
+    {
+        $leaveRequest = LeaveRequest::findOrFail($id);
+
+        return view('employees.update')->with(['leaveRequest' => $leaveRequest]);
     }
 
     /**
@@ -80,7 +106,11 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return view('employees.show', compact('employee'));
+
+        $leaveRequests = LeaveRequest::where('status','pending')->where('employee_id', $employee->id)->get();
+        $leaveBalances = LeaveBalance::where('employee_id',$employee->id)->get();
+
+        return view('employees.show', compact('employee', 'leaveBalances', 'leaveRequests'));
     }
 
     /**
