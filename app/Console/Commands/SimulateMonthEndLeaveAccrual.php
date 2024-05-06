@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Employee;
 use App\Models\LeaveType;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class SimulateMonthEndLeaveAccrual extends Command
 {
@@ -28,6 +29,7 @@ class SimulateMonthEndLeaveAccrual extends Command
     public function handle(): int
     {
         $this->info('Simulating Month End Leave Accrual...');
+        Log::channel('daily')->info('Starting simulation of Month End Leave Accrual...');
 
         // Get all leave types with accrual enabled
         $leaveTypes = LeaveType::all();
@@ -49,9 +51,11 @@ class SimulateMonthEndLeaveAccrual extends Command
             }
 
             $this->info("Leave accrual for employee {$employee->name} done");
+            Log::channel('daily')->info('Leave accrual for employee '.$employee->name.' done');
         }
 
         $this->info('Month End Leave Accrual Simulation Completed.');
+        Log::channel('daily')->info('Month End Leave Accrual Simulation Completed.');
         return 0;
     }
 }
