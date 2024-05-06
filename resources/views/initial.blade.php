@@ -4,7 +4,7 @@
         <div class='mb-4 font-medium text-sm text-green-600'>
             {{ session('status') }}
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Create Initial Leave Type</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Create Leave Type</h2>
 
         <form method="POST" action="{{ route('initial.store') }}">
         @csrf

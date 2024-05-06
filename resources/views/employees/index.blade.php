@@ -8,6 +8,14 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                @if (session()->has('success'))
+                    <div id="alert-div" class="fixed top-8 right-0 z-50 px-4 py-3 rounded-full shadow-md" role="alert">
+                        <div class="bg-gradient-to-r from-green-600 to-gray-200 flex items-center text-white p-4 rounded-full">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2-2 4 4M17 12l-2-2 4 4"></path></svg>
+                            <span class="font-medium">{{ session('success') }}</span>
+                        </div>
+                    </div>
+                @endif
                 <div class="overflow-x-auto rounded-lg shadow p-4">
                     <div class="flex justify-between mb-4">
                         <a href="{{ route('employees.create') }}" class="inline-flex items-center px-2 py-2 text-sm font-medium text-center text-white

@@ -19,7 +19,7 @@
                     @if(Auth::user()->isAdmin())
                         <x-nav-link :href="route('leave-types.index')"
                                     :active="request()->routeIs('leave-types.index')">
-                            {{ __('Leave Types') }}
+                            {{ __('Manage Leave Type') }}
                         </x-nav-link>
                         <x-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')">
                             {{ __('Employee Management') }}
@@ -99,7 +99,7 @@
             </x-responsive-nav-link>
             @if(Auth::user()->isAdmin())
             <x-responsive-nav-link :href="route('leave-types.index')" :active="request()->routeIs('leave-types.index')">
-                {{ __('Leave Types') }}
+                {{ __('Manage Leave Type') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('employees.index')" :active="request()->routeIs('employees.index')">
                 {{ __('Employee Management') }}

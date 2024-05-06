@@ -93,7 +93,7 @@ class LeaveTypeController extends Controller
 
         $request->validate([
             'name' => 'required|max:255',
-            'days_per_year' => 'required|numeric|min:1|max:100',
+            'days_per_year' => 'required|numeric|min:24|max:100',
         ]);
 
         $leaveType->update($request->all());
