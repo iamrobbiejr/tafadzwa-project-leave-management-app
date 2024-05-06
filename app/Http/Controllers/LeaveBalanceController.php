@@ -66,7 +66,7 @@ class LeaveBalanceController extends Controller
 
         }
 
-        return redirect()->back()->with('error', 'Select at least one filter parameter');
+        return redirect()->route('leave-balance.index')->with('error', 'Select at least one filter parameter');
 
     }
 

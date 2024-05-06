@@ -17,7 +17,7 @@
                     </div>
                 @endif
                 <h3 class="text-2xl font-semibold p-4">Filter</h3>
-                <form method="post" action="{{ route('filter') }}" class="inline-flex items-center mt-4 p-4">
+                <form method="POST" action="{{ route('filter') }}" class="inline-flex items-center mt-4 p-4">
                     @csrf
 
                     <select name="employee_id" class="block h-full w-full rounded-md border-0 px-8 py-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
